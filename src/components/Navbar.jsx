@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+"use client"
+
+import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,85 +10,90 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Bell, Search, User, Settings, LogOut, GraduationCap } from 'lucide-react';
-import { toast } from 'sonner';
-import api from '@/lib/api';
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Bell, Search, User, LogOut, GraduationCap, Menu } from "lucide-react"
+import { toast } from "sonner"
+import api from "@/lib/api"
 
-const Navbar = ({ user, onLogout }) => {
-  const [notifications, setNotifications] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+const Navbar = ({ user, onLogout, onMenuClick }) => {
+  const [notifications, setNotifications] = useState([])
+  const [unreadCount, setUnreadCount] = useState(0)
 
   useEffect(() => {
     if (user) {
-      fetchRecentNotifications();
-      fetchUnreadCount();
+      fetchRecentNotifications()
+      fetchUnreadCount()
     }
-  }, [user]);
+  }, [user])
 
   const fetchRecentNotifications = async () => {
     try {
-      const response = await api.get('/api/notifications?limit=5');
-      setNotifications(response.data);
+      const response = await api.get("/api/notifications?limit=5")
+      setNotifications(response.data)
     } catch (error) {
-      console.error('Failed to fetch notifications:', error);
+      console.error("Failed to fetch notifications:", error)
     }
-  };
+  }
 
   const fetchUnreadCount = async () => {
     try {
-      const response = await api.get('/api/notifications/unread-count');
-      setUnreadCount(response.data.count);
+      const response = await api.get("/api/notifications/unread-count")
+      setUnreadCount(response.data.count)
     } catch (error) {
-      console.error('Failed to fetch unread count:', error);
+      console.error("Failed to fetch unread count:", error)
     }
-  };
+  }
 
   const handleLogout = async () => {
     try {
-      await api.post('/logout');
-      onLogout();
-      toast.success('Logged out successfully');
+      await api.post("/logout")
+      onLogout()
+      toast.success("Logged out successfully")
     } catch (error) {
-      console.error(error);
-      onLogout(); // Logout anyway on client side
+      console.error(error)
+      onLogout()
     }
-  };
+  }
 
   const getInitials = (name) => {
-    if (!name) return 'U';
+    if (!name) return "U"
     return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
       .toUpperCase()
-      .slice(0, 2);
-  };
+      .slice(0, 2)
+  }
 
   const formatTimeAgo = (date) => {
-    const now = new Date();
-    const diffInSeconds = Math.floor((now - new Date(date)) / 1000);
+    const now = new Date()
+    const diffInSeconds = Math.floor((now - new Date(date)) / 1000)
 
-    if (diffInSeconds < 60) return 'Just now';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    return `${Math.floor(diffInSeconds / 86400)}d ago`;
-  };
+    if (diffInSeconds < 60) return "Just now"
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`
+    return `${Math.floor(diffInSeconds / 86400)}d ago`
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50">
       <div className="h-full px-4 flex items-center justify-between">
-        {/* Logo and Brand */}
-        <Link to="/dashboard" className="flex items-center gap-3">
-          <div className="h-10 w-10 bg-primary rounded-lg flex items-center justify-center">
-            <GraduationCap className="h-6 w-6 text-white" />
-          </div>
-          <div className="hidden md:block">
-            <h1 className="text-xl font-bold text-gray-900">School Management</h1>
-            <p className="text-xs text-gray-500">Admin Portal</p>
-          </div>
-        </Link>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" className="lg:hidden" onClick={onMenuClick}>
+            <Menu className="h-5 w-5" />
+          </Button>
+
+          <Link to="/dashboard" className="flex items-center gap-3">
+            <div className="h-10 w-10 bg-primary rounded-lg flex items-center justify-center">
+              <GraduationCap className="h-6 w-6 text-white" />
+            </div>
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-bold text-gray-900">School Management</h1>
+              <p className="text-xs text-gray-500">Admin Portal</p>
+            </div>
+          </Link>
+        </div>
 
         {/* Search Bar - Desktop */}
         <div className="hidden lg:flex flex-1 max-w-md mx-8">
@@ -101,7 +108,7 @@ const Navbar = ({ user, onLogout }) => {
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Search Icon - Mobile */}
           <Button variant="ghost" size="icon" className="lg:hidden">
             <Search className="h-5 w-5" />
@@ -114,7 +121,7 @@ const Navbar = ({ user, onLogout }) => {
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 && (
                   <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full flex items-center justify-center">
-                    {unreadCount > 9 ? '9+' : unreadCount}
+                    {unreadCount > 9 ? "9+" : unreadCount}
                   </span>
                 )}
               </Button>
@@ -124,20 +131,16 @@ const Navbar = ({ user, onLogout }) => {
               <DropdownMenuSeparator />
               <div className="max-h-96 overflow-y-auto">
                 {notifications.length === 0 ? (
-                  <div className="p-3 text-center text-gray-500">
-                    No notifications yet
-                  </div>
+                  <div className="p-3 text-center text-gray-500">No notifications yet</div>
                 ) : (
                   notifications.map((notification) => (
-                    <div 
-                      key={notification._id} 
-                      className={`p-3 hover:bg-gray-50 cursor-pointer ${!notification.read ? 'bg-blue-50' : ''}`}
+                    <div
+                      key={notification._id}
+                      className={`p-3 hover:bg-gray-50 cursor-pointer ${!notification.read ? "bg-blue-50" : ""}`}
                     >
                       <p className="text-sm font-medium">{notification.title}</p>
                       <p className="text-xs text-gray-500">{notification.message}</p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {formatTimeAgo(notification.created_at)}
-                      </p>
+                      <p className="text-xs text-gray-400 mt-1">{formatTimeAgo(notification.created_at)}</p>
                     </div>
                   ))
                 )}
@@ -145,9 +148,7 @@ const Navbar = ({ user, onLogout }) => {
               <DropdownMenuSeparator />
               <div className="p-2">
                 <Button variant="ghost" className="w-full text-sm" asChild>
-                  <Link to="/notifications">
-                    View all notifications
-                  </Link>
+                  <Link to="/notifications">View all notifications</Link>
                 </Button>
               </div>
             </DropdownMenuContent>
@@ -192,7 +193,7 @@ const Navbar = ({ user, onLogout }) => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

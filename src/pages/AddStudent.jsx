@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+'use client';
+
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { toast } from 'sonner';
 import api from '@/lib/api';
 import { ArrowLeft } from 'lucide-react';
@@ -23,20 +31,20 @@ const AddStudent = () => {
     phone: '',
     address: '',
     guardianName: '',
-    guardianPhone: ''
+    guardianPhone: '',
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSelectChange = (name, value) => {
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -57,110 +65,120 @@ const AddStudent = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate('/students')}>
-          <ArrowLeft className="h-5 w-5" />
+    <div className='space-y-6'>
+      <div className='flex items-center gap-4'>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={() => navigate('/students')}
+        >
+          <ArrowLeft className='h-5 w-5' />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Add New Student</h1>
-          <p className="text-gray-500 mt-1">Fill in the student information below</p>
+          <h1 className='text-2xl sm:text-3xl font-bold text-gray-900'>
+            Add New Student
+          </h1>
+          <p className='text-gray-500 mt-1 text-sm sm:text-base'>
+            Fill in the student information below
+          </p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
+        <div className='grid grid-cols-1 xl:grid-cols-3 gap-6'>
+          <div className='xl:col-span-2 space-y-6'>
             <Card>
               <CardHeader>
                 <CardTitle>Personal Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
+              <CardContent className='space-y-4'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                  <div className='space-y-2'>
+                    <Label htmlFor='name'>Full Name *</Label>
                     <Input
-                      id="name"
-                      name="name"
+                      id='name'
+                      name='name'
                       value={formData.name}
                       onChange={handleChange}
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="rollNumber">Roll Number *</Label>
+                  <div className='space-y-2'>
+                    <Label htmlFor='rollNumber'>Roll Number *</Label>
                     <Input
-                      id="rollNumber"
-                      name="rollNumber"
+                      id='rollNumber'
+                      name='rollNumber'
                       value={formData.rollNumber}
                       onChange={handleChange}
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="class">Class *</Label>
+                  <div className='space-y-2'>
+                    <Label htmlFor='class'>Class *</Label>
                     <Input
-                      id="class"
-                      name="class"
+                      id='class'
+                      name='class'
                       value={formData.class}
                       onChange={handleChange}
-                      placeholder="e.g., 10A"
+                      placeholder='e.g., 10A'
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="age">Age *</Label>
+                  <div className='space-y-2'>
+                    <Label htmlFor='age'>Age *</Label>
                     <Input
-                      id="age"
-                      name="age"
-                      type="number"
+                      id='age'
+                      name='age'
+                      type='number'
                       value={formData.age}
                       onChange={handleChange}
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="gender">Gender *</Label>
-                    <Select 
-                      value={formData.gender} 
-                      onValueChange={(value) => handleSelectChange('gender', value)}
+                  <div className='space-y-2'>
+                    <Label htmlFor='gender'>Gender *</Label>
+                    <Select
+                      value={formData.gender}
+                      onValueChange={(value) =>
+                        handleSelectChange('gender', value)
+                      }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select gender" />
+                        <SelectValue placeholder='Select gender' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Male">Male</SelectItem>
-                        <SelectItem value="Female">Female</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
+                        <SelectItem value='Male'>Male</SelectItem>
+                        <SelectItem value='Female'>Female</SelectItem>
+                        <SelectItem value='Other'>Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
+                  <div className='space-y-2'>
+                    <Label htmlFor='email'>Email *</Label>
                     <Input
-                      id="email"
-                      name="email"
-                      type="email"
+                      id='email'
+                      name='email'
+                      type='email'
                       value={formData.email}
                       onChange={handleChange}
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone</Label>
+                  <div className='space-y-2'>
+                    <Label htmlFor='phone'>Phone</Label>
                     <Input
-                      id="phone"
-                      name="phone"
+                      id='phone'
+                      name='phone'
                       value={formData.phone}
                       onChange={handleChange}
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="address">Address</Label>
+                <div className='space-y-2'>
+                  <Label htmlFor='address'>Address</Label>
                   <Textarea
-                    id="address"
-                    name="address"
+                    id='address'
+                    name='address'
                     value={formData.address}
                     onChange={handleChange}
                     rows={3}
@@ -173,22 +191,22 @@ const AddStudent = () => {
               <CardHeader>
                 <CardTitle>Guardian Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="guardianName">Guardian Name</Label>
+              <CardContent className='space-y-4'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                  <div className='space-y-2'>
+                    <Label htmlFor='guardianName'>Guardian Name</Label>
                     <Input
-                      id="guardianName"
-                      name="guardianName"
+                      id='guardianName'
+                      name='guardianName'
                       value={formData.guardianName}
                       onChange={handleChange}
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="guardianPhone">Guardian Phone</Label>
+                  <div className='space-y-2'>
+                    <Label htmlFor='guardianPhone'>Guardian Phone</Label>
                     <Input
-                      id="guardianPhone"
-                      name="guardianPhone"
+                      id='guardianPhone'
+                      name='guardianPhone'
                       value={formData.guardianPhone}
                       onChange={handleChange}
                     />
@@ -198,19 +216,19 @@ const AddStudent = () => {
             </Card>
           </div>
 
-          <div className="space-y-6">
+          <div className='space-y-6'>
             <Card>
               <CardHeader>
                 <CardTitle>Actions</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <Button type="submit" className="w-full" disabled={loading}>
+              <CardContent className='space-y-3'>
+                <Button type='submit' className='w-full' disabled={loading}>
                   {loading ? 'Adding Student...' : 'Add Student'}
                 </Button>
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  className="w-full"
+                <Button
+                  type='button'
+                  variant='outline'
+                  className='w-full bg-transparent'
                   onClick={() => navigate('/students')}
                 >
                   Cancel
@@ -223,8 +241,9 @@ const AddStudent = () => {
                 <CardTitle>Note</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600">
-                  Fields marked with * are required. Make sure all information is accurate before submitting.
+                <p className='text-sm text-gray-600'>
+                  Fields marked with * are required. Make sure all information
+                  is accurate before submitting.
                 </p>
               </CardContent>
             </Card>

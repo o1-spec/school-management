@@ -66,17 +66,17 @@ const StudentDetails = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className='flex items-center justify-center h-96'>
+        <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-primary'></div>
       </div>
     );
   }
 
   if (!student) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500">Student not found</p>
-        <Button onClick={() => navigate('/students')} className="mt-4">
+      <div className='text-center py-12'>
+        <p className='text-gray-500'>Student not found</p>
+        <Button onClick={() => navigate('/students')} className='mt-4'>
           Back to Students
         </Button>
       </div>
@@ -84,113 +84,160 @@ const StudentDetails = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate('/students')}>
-            <ArrowLeft className="h-5 w-5" />
+    <div className='space-y-6'>
+      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
+        <div className='flex items-center gap-4'>
+          <Button
+            variant='ghost'
+            size='icon'
+            onClick={() => navigate('/students')}
+            className='shrink-0'
+          >
+            <ArrowLeft className='h-5 w-5' />
           </Button>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{student.name}</h1>
-            <p className="text-gray-500 mt-1">Roll Number: {student.rollNumber}</p>
+          <div className='min-w-0'>
+            <h1 className='text-2xl sm:text-3xl font-bold text-gray-900 truncate'>
+              {student.name}
+            </h1>
+            <p className='text-gray-500 mt-1 text-sm sm:text-base'>
+              Roll Number: {student.rollNumber}
+            </p>
           </div>
         </div>
-        <Button>
-          <Edit className="h-4 w-4 mr-2" />
+        <Button className='w-full sm:w-auto'>
+          <Edit className='h-4 w-4 mr-2' />
           Edit Student
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1">
+      <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+        <Card className='lg:col-span-1'>
           <CardHeader>
-            <CardTitle>Student Information</CardTitle>
+            <CardTitle className='text-lg sm:text-xl'>
+              Student Information
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-center">
-              <div className="h-24 w-24 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="h-12 w-12 text-primary" />
+          <CardContent className='space-y-4'>
+            <div className='flex items-center justify-center'>
+              <div className='h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-primary/10 flex items-center justify-center'>
+                <User className='h-10 w-10 sm:h-12 sm:w-12 text-primary' />
               </div>
             </div>
-            <div className="space-y-3 pt-4">
+            <div className='space-y-3 pt-4'>
               <div>
-                <p className="text-sm text-gray-500">Status</p>
-                <Badge variant={student.status === 'active' ? 'default' : 'secondary'}>
+                <p className='text-sm text-gray-500'>Status</p>
+                <Badge
+                  variant={
+                    student.status === 'active' ? 'default' : 'secondary'
+                  }
+                  className='text-xs'
+                >
                   {student.status}
                 </Badge>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Class</p>
-                <p className="font-medium">{student.class}</p>
+                <p className='text-sm text-gray-500'>Class</p>
+                <p className='font-medium text-sm sm:text-base'>
+                  {student.class}
+                </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Age</p>
-                <p className="font-medium">{student.age} years</p>
+                <p className='text-sm text-gray-500'>Age</p>
+                <p className='font-medium text-sm sm:text-base'>
+                  {student.age} years
+                </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Gender</p>
-                <p className="font-medium">{student.gender}</p>
+                <p className='text-sm text-gray-500'>Gender</p>
+                <p className='font-medium text-sm sm:text-base'>
+                  {student.gender}
+                </p>
               </div>
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-gray-500" />
-                <p className="text-sm">{student.email}</p>
+              <div className='flex items-center gap-2'>
+                <Mail className='h-4 w-4 text-gray-500 shrink-0' />
+                <p className='text-sm break-all'>{student.email}</p>
               </div>
               {student.phone && (
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-gray-500" />
-                  <p className="text-sm">{student.phone}</p>
+                <div className='flex items-center gap-2'>
+                  <Phone className='h-4 w-4 text-gray-500 shrink-0' />
+                  <p className='text-sm'>{student.phone}</p>
                 </div>
               )}
               {student.address && (
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 text-gray-500 mt-1" />
-                  <p className="text-sm">{student.address}</p>
+                <div className='flex items-start gap-2'>
+                  <MapPin className='h-4 w-4 text-gray-500 mt-1 shrink-0' />
+                  <p className='text-sm'>{student.address}</p>
                 </div>
               )}
             </div>
             {(student.guardianName || student.guardianPhone) && (
-              <div className="pt-4 border-t">
-                <p className="text-sm font-medium text-gray-700 mb-2">Guardian Information</p>
+              <div className='pt-4 border-t'>
+                <p className='text-sm font-medium text-gray-700 mb-2'>
+                  Guardian Information
+                </p>
                 {student.guardianName && (
-                  <p className="text-sm text-gray-600">Name: {student.guardianName}</p>
+                  <p className='text-sm text-gray-600'>
+                    Name: {student.guardianName}
+                  </p>
                 )}
                 {student.guardianPhone && (
-                  <p className="text-sm text-gray-600">Phone: {student.guardianPhone}</p>
+                  <p className='text-sm text-gray-600'>
+                    Phone: {student.guardianPhone}
+                  </p>
                 )}
               </div>
             )}
           </CardContent>
         </Card>
 
-        <div className="lg:col-span-2">
-          <Tabs defaultValue="grades" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="grades">Grades</TabsTrigger>
-              <TabsTrigger value="attendance">Attendance</TabsTrigger>
-              <TabsTrigger value="fees">Fees</TabsTrigger>
+        <div className='lg:col-span-2'>
+          <Tabs defaultValue='grades' className='space-y-4'>
+            <TabsList className='grid w-full grid-cols-3'>
+              <TabsTrigger value='grades' className='text-xs sm:text-sm'>
+                Grades
+              </TabsTrigger>
+              <TabsTrigger value='attendance' className='text-xs sm:text-sm'>
+                Attendance
+              </TabsTrigger>
+              <TabsTrigger value='fees' className='text-xs sm:text-sm'>
+                Fees
+              </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="grades">
+            <TabsContent value='grades'>
               <Card>
                 <CardHeader>
-                  <CardTitle>Academic Performance</CardTitle>
+                  <CardTitle className='text-lg sm:text-xl'>
+                    Academic Performance
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {grades.length === 0 ? (
-                    <p className="text-center text-gray-500 py-8">No grades recorded yet</p>
+                    <p className='text-center text-gray-500 py-8 text-sm sm:text-base'>
+                      No grades recorded yet
+                    </p>
                   ) : (
-                    <div className="space-y-3">
+                    <div className='space-y-3'>
                       {grades.map((grade) => (
-                        <div key={grade._id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                          <div>
-                            <p className="font-medium">{grade.subject}</p>
-                            <p className="text-sm text-gray-500">
+                        <div
+                          key={grade._id}
+                          className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-3 bg-gray-50 rounded-lg'
+                        >
+                          <div className='min-w-0'>
+                            <p className='font-medium text-sm sm:text-base truncate'>
+                              {grade.subject}
+                            </p>
+                            <p className='text-xs sm:text-sm text-gray-500'>
                               {grade.term} - {grade.academic_year}
                             </p>
                           </div>
-                          <div className="text-right">
-                            <p className="text-2xl font-bold text-primary">{grade.grade}</p>
-                            <p className="text-sm text-gray-500">{grade.marks}/100</p>
+                          <div className='text-left sm:text-right shrink-0'>
+                            <p className='text-xl sm:text-2xl font-bold text-primary'>
+                              {grade.grade}
+                            </p>
+                            <p className='text-xs sm:text-sm text-gray-500'>
+                              {grade.marks}/100
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -200,22 +247,36 @@ const StudentDetails = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="attendance">
+            <TabsContent value='attendance'>
               <Card>
                 <CardHeader>
-                  <CardTitle>Attendance Records</CardTitle>
+                  <CardTitle className='text-lg sm:text-xl'>
+                    Attendance Records
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {attendance.length === 0 ? (
-                    <p className="text-center text-gray-500 py-8">No attendance records yet</p>
+                    <p className='text-center text-gray-500 py-8 text-sm sm:text-base'>
+                      No attendance records yet
+                    </p>
                   ) : (
-                    <div className="space-y-2">
+                    <div className='space-y-2'>
                       {attendance.slice(0, 10).map((record) => (
-                        <div key={record._id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                          <p className="text-sm">
+                        <div
+                          key={record._id}
+                          className='flex justify-between items-center p-3 bg-gray-50 rounded-lg'
+                        >
+                          <p className='text-sm'>
                             {new Date(record.date).toLocaleDateString()}
                           </p>
-                          <Badge variant={record.status === 'present' ? 'default' : 'destructive'}>
+                          <Badge
+                            variant={
+                              record.status === 'present'
+                                ? 'default'
+                                : 'destructive'
+                            }
+                            className='text-xs'
+                          >
                             {record.status}
                           </Badge>
                         </div>
@@ -226,28 +287,42 @@ const StudentDetails = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="fees">
+            <TabsContent value='fees'>
               <Card>
                 <CardHeader>
-                  <CardTitle>Fee Payment History</CardTitle>
+                  <CardTitle className='text-lg sm:text-xl'>
+                    Fee Payment History
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {fees.length === 0 ? (
-                    <p className="text-center text-gray-500 py-8">No fee records yet</p>
+                    <p className='text-center text-gray-500 py-8 text-sm sm:text-base'>
+                      No fee records yet
+                    </p>
                   ) : (
-                    <div className="space-y-3">
+                    <div className='space-y-3'>
                       {fees.map((fee) => (
-                        <div key={fee._id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                          <div>
-                            <p className="font-medium">${fee.amount}</p>
-                            <p className="text-sm text-gray-500">
+                        <div
+                          key={fee._id}
+                          className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 p-3 bg-gray-50 rounded-lg'
+                        >
+                          <div className='min-w-0'>
+                            <p className='font-medium text-sm sm:text-base'>
+                              ₦{fee.amount.toLocaleString()}
+                            </p>
+                            <p className='text-xs sm:text-sm text-gray-500'>
                               {fee.term} - {fee.academic_year}
                             </p>
-                            <p className="text-xs text-gray-400">
+                            <p className='text-xs text-gray-400'>
                               {new Date(fee.payment_date).toLocaleDateString()}
                             </p>
                           </div>
-                          <Badge variant={fee.status === 'paid' ? 'default' : 'destructive'}>
+                          <Badge
+                            variant={
+                              fee.status === 'paid' ? 'default' : 'destructive'
+                            }
+                            className='text-xs shrink-0'
+                          >
                             {fee.status}
                           </Badge>
                         </div>

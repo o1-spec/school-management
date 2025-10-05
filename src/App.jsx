@@ -1,57 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'sonner';
+"use client"
+
+import { useState, useEffect } from "react"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
+import { Toaster } from "sonner"
 
 // Layout Components
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+import Navbar from "./components/Navbar"
+import Sidebar from "./components/Sidebar"
 
 // Auth Pages
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from "./pages/Login"
+import Register from "./pages/Register"
 
 // Main Pages
-import Dashboard from './pages/Dashboard';
-import Students from './pages/Students';
-import StudentDetails from './pages/StudentDetails';
-import AddStudent from './pages/AddStudent';
-import Grades from './pages/Grades';
-import Attendance from './pages/Attendance';
-import Fees from './pages/Fees';
-import Reports from './pages/Reports';
-import Profile from './pages/Profile';
-import Help from './pages/Help';
-import Notifications from './pages/Notifications';
+import Dashboard from "./pages/Dashboard"
+import Students from "./pages/Students"
+import StudentDetails from "./pages/StudentDetails"
+import AddStudent from "./pages/AddStudent"
+import Grades from "./pages/Grades"
+import Attendance from "./pages/Attendance"
+import Fees from "./pages/Fees"
+import Reports from "./pages/Reports"
+import Profile from "./pages/Profile"
+import Help from "./pages/Help"
+import Notifications from "./pages/Notifications"
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem('schoolManagementAuthToken');
-    const userData = localStorage.getItem('user');
-    
+    const token = localStorage.getItem("schoolManagementAuthToken")
+    const userData = localStorage.getItem("user")
+
     if (token && userData) {
-      setIsAuthenticated(true);
-      setUser(JSON.parse(userData));
+      setIsAuthenticated(true)
+      setUser(JSON.parse(userData))
     }
-    setLoading(false);
-  }, []);
+    setLoading(false)
+  }, [])
 
   const handleLogin = (token, userData) => {
-    localStorage.setItem('schoolManagementAuthToken', token);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setIsAuthenticated(true);
-    setUser(userData);
-  };
+    localStorage.setItem("schoolManagementAuthToken", token)
+    localStorage.setItem("user", JSON.stringify(userData))
+    setIsAuthenticated(true)
+    setUser(userData)
+  }
 
   const handleLogout = () => {
-    localStorage.removeItem('schoolManagementAuthToken');
-    localStorage.removeItem('user');
-    setIsAuthenticated(false);
-    setUser(null);
-  };
+    localStorage.removeItem("schoolManagementAuthToken")
+    localStorage.removeItem("user")
+    setIsAuthenticated(false)
+    setUser(null)
+  }
 
   if (loading) {
     return (
@@ -59,7 +62,7 @@ function App() {
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         <p className="mt-4 text-gray-600">Loading...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -68,10 +71,10 @@ function App() {
         <Toaster position="top-right" richColors closeButton />
         {isAuthenticated ? (
           <>
-            <Navbar user={user} onLogout={handleLogout} />
+            <Navbar user={user} onLogout={handleLogout} onMenuClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
             <div className="flex">
-              <Sidebar />
-              <main className="flex-1 ml-64 p-8 mt-16">
+              <Sidebar isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+              <main className="flex-1 lg:ml-64 p-4 sm:p-6 lg:p-8 mt-16">
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/dashboard" element={<Dashboard />} />
@@ -99,7 +102,7 @@ function App() {
         )}
       </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App
