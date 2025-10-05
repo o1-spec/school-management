@@ -1,11 +1,25 @@
 "use client"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, BookOpen, Calendar, DollarSign, BarChart3, Bell, HelpCircle, X } from "lucide-react"
+import { LayoutDashboard, Users, BookOpen, Calendar, DollarSign, BarChart3, Bell, HelpCircle, LogOut, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import { toast } from "sonner"
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, onLogout }) => {
   const location = useLocation()
+  const navigate = useNavigate()
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false)
 
   const menuItems = [
     {
@@ -60,6 +74,21 @@ const Sidebar = ({ isOpen, onClose }) => {
   const handleLinkClick = () => {
     if (window.innerWidth < 1024) {
       onClose()
+    }
+  }
+
+  const handleLogoutClick = () => {
+    setShowLogoutDialog(true)
+  }
+
+  const handleLogoutConfirm = () => {
+    localStorage.removeItem('schoolManagementAuthToken')
+    localStorage.removeItem('user')
+    toast.success('Logged out successfully')
+    navigate('/login')
+    setShowLogoutDialog(false)
+    if (onLogout) {
+      onLogout()
     }
   }
 
@@ -131,9 +160,36 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </Link>
               )
             })}
+            
+            {/* Logout Button */}
+            <button
+              onClick={handleLogoutClick}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+            >
+              <LogOut className="h-5 w-5" />
+              Logout
+            </button>
           </div>
         </div>
       </aside>
+
+      {/* Logout Confirmation Dialog */}
+      <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-lg sm:text-xl">Are you sure you want to logout?</AlertDialogTitle>
+            <AlertDialogDescription className="text-sm sm:text-base">
+              You will be redirected to the login page and will need to sign in again to access your account.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleLogoutConfirm} className="bg-red-600 hover:bg-red-700">
+              Logout
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }
