@@ -110,7 +110,7 @@ const Navbar = ({ user, onLogout, onMenuClick }) => {
         {/* Right Section */}
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Search Icon - Mobile */}
-          <Button variant="ghost" size="icon" className="lg:hidden">
+          <Button variant="ghost" size="icon" className="hidden">
             <Search className="h-5 w-5" />
           </Button>
 
